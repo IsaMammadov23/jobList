@@ -1,0 +1,40 @@
+[
+  {
+    "title": "Software Engineer",
+    "company": "TechCorp",
+    "location": "Baku",
+    "jobType": "Full-time",
+    "salary": "4000 USD",
+    "jobDescription": "Develop software",
+    "requirements": "Java, Spring Boot",
+    "experienceLevel": "Mid",
+    "educationLevel": "Bachelor",
+    "industry": "IT",
+    "postedDate": "2025-04-09T10:00:00",
+    "applicationDeadline": null,
+    "howToApply": "Send resume",
+    "companyLogo": "techcorp_logo.png",
+    "benefits": "Health Insurance",
+    "tags": "Java, Spring",
+    "source": "Djinni"
+  },
+  {
+    "title": "Product Manager",
+    "company": "Innovate Ltd",
+    "location": "Baku",
+    "jobType": "Part-time",
+    "salary": "3000 USD",
+    "jobDescription": "Manage product development",
+    "requirements": "Product Management, Agile",
+    "experienceLevel": "Senior",
+    "educationLevel": "Master",
+    "industry": "Tech",
+    "postedDate": "2025-04-08T14:30:00",
+    "applicationDeadline": "2025-04-20T23:59:59",
+    "howToApply": "Submit application on our website",
+    "companyLogo": "innovate_logo.png",
+    "benefits": "Paid leave",
+    "tags": "Product Management, Agile",
+    "source": "LinkedIn"
+  }
+]

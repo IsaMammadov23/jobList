@@ -1,0 +1,77 @@
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.3'
+	id 'io.spring.dependency-management' version '1.1.6'
+	id 'com.bmuschko.docker-remote-api' version "$dockerVersion" apply false
+
+}
+
+group = 'az.ingress'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+		implementation 'org.springframework.boot:spring-boot-starter-web'
+		implementation 'org.springframework.boot:spring-boot-starter-logging'
+		implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+		implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2'
+
+
+		implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+		implementation "org.modelmapper:modelmapper:3.2.1"
+		implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0"
+
+		runtimeOnly 'org.postgresql:postgresql'
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+		testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'  // JUnit 5 API
+		testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2' // JUnit 5 Engine
+
+		testImplementation 'org.mockito:mockito-core:4.0.0'
+	}
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+task dockerFile(dependsOn: ['assemble'], type: Dockerfile) {
+
+	destFile.set(project.file('Dockerfile'))
+	from "openjdk:17"
+	copyFile "build/libs/${project.name}-${project.version}.jar", '/app/'
+	workingDir "/app/"
+	entryPoint "java"
+	defaultCommand "-jar", "/app/${project.name}-${project.version}.jar"
+
+}
+
+
+task dockerImageAndPush(dependsOn: dockerFile, type: Exec) {
+	commandLine "docker", "buildx", "build", "--platform", "linux/arm64,linux/amd64", "-t", "$dockerPrefix/${project.name}:$imageVersion", "."
+}
